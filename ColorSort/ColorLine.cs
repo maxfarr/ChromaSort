@@ -17,9 +17,8 @@ namespace ColorSort
         public HSV[] Colors;
         public bool Sorted;
 
-        public ColorLine(int length)
+        public ColorLine(int length, Random rand)
         {
-            Random rand = new Random();
             Sorted = false;
             Colors = new HSV[length];
             for (int i = 0; i < length; i++)

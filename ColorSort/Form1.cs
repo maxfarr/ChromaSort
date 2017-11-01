@@ -39,9 +39,17 @@ namespace ColorSort
 
         ColorLine[] lines;
 
+        Action[] sorts;
+
         public Form1()
         {
             InitializeComponent();
+
+            sorts = new Action[]
+            {
+                bubbleSort
+            };
+
             rand = new Random();
             canvas = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             gfx = Graphics.FromImage(canvas);

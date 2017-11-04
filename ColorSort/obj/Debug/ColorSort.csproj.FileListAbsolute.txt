@@ -57,3 +57,15 @@ C:\Users\VisitorDL9\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.csproj.Ge
 C:\Users\VisitorDL9\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.csproj.CoreCompileInputs.cache
 C:\Users\VisitorDL9\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.exe
 C:\Users\VisitorDL9\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.pdb
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\bin\Debug\ColorSort.exe.config
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.exe
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.pdb
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\bin\Debug\ColorSort.exe
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\bin\Debug\ColorSort.pdb
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\bin\Debug\Colorspace.dll
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\bin\Debug\Spectrum.dll
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.csprojResolveAssemblyReference.cache
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.Form1.resources
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.Properties.Resources.resources
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.csproj.GenerateResource.Cache
+C:\Users\GMRInstructor\Documents\ChromaSort\ColorSort\obj\Debug\ColorSort.csproj.CoreCompileInputs.cache

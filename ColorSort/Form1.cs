@@ -48,7 +48,17 @@ namespace ColorSort
         Func<bool>[] sorts;
         bool sorted;
         bool makeSwap;
-        int[] swap;
+
+        Queue<int[]> swaps;
+
+        enum UpdateType
+        {
+            SWAP,
+            LINE,
+            FULL
+        }
+
+        UpdateType updateMode = UpdateType.FULL;
 
         enum Sorts
         {
@@ -80,12 +90,12 @@ namespace ColorSort
             bubbleHeight = 1;
             bubbleWidth = 0;
             makeSwap = false;
-            swap = new int[3];
+            swaps = new Queue<int[]>();
 
             rand = new Random();
             canvas = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             gfx = Graphics.FromImage(canvas);
-            initialSize = new Size(500, 500);
+            initialSize = new Size(128, 64);
             colorImage = new Bitmap(initialSize.Width, initialSize.Height);
             lines = new ColorLine[initialSize.Width];
             gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -115,15 +125,22 @@ namespace ColorSort
                 {
                     sorted = true;
                 }
+                
+                switch(updateMode)
+                {
+                    case UpdateType.FULL:
+                        colorImage = generateImage();
+                        break;
 
-                //if(makeSwap)
-                //{
-                //    makeSwap = false;
+                    case UpdateType.LINE:
 
-                //    updateSwap();
-                //}
-                colorImage = generateImage();
-                //updateLineSwap();
+                        break;
+
+                    case UpdateType.SWAP:
+                        updateSwap();
+                        break;
+                }
+                
                 gfx.DrawImage(colorImage, new Rectangle(Point.Empty, pictureBox1.Size));
                 pictureBox1.Image = canvas;
             }
@@ -163,15 +180,19 @@ namespace ColorSort
 
         void updateSwap()
         {
-            RGB pixelA = lines[swap[0]].Colors[swap[1]].ToRGB();
-            RGB pixelB = lines[swap[0]].Colors[swap[2]].ToRGB();
+            if (swaps.Count == 0)
+            {
+                return;
+            }
+            else
+            {
+                int[] swap = swaps.Dequeue();
+                RGB pixelA = lines[swap[0]].Colors[swap[1]].ToRGB();
+                RGB pixelB = lines[swap[0]].Colors[swap[2]].ToRGB();
 
-            colorImage.SetPixel(swap[0], swap[2], System.Drawing.Color.FromArgb(255, pixelB.R, pixelB.G, pixelB.B));
-            colorImage.SetPixel(swap[0], swap[1], System.Drawing.Color.FromArgb(255, pixelA.R, pixelA.G, pixelA.B));
-
-            gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
-            gfx.DrawImage(colorImage, new Rectangle(Point.Empty, pictureBox1.Size));
-            pictureBox1.Image = canvas;
+                colorImage.SetPixel(swap[0], swap[2], System.Drawing.Color.FromArgb(255, pixelB.R, pixelB.G, pixelB.B));
+                colorImage.SetPixel(swap[0], swap[1], System.Drawing.Color.FromArgb(255, pixelA.R, pixelA.G, pixelA.B));
+            }
         }
 
         Bitmap generateImage()
@@ -212,6 +233,8 @@ namespace ColorSort
                             HSV temp = lines[i].Colors[(int)lines[i].quickStart];
                             lines[i].Colors[(int)lines[i].quickStart] = lines[i].Colors[(int)lines[i].quickEnd - 1];
                             lines[i].Colors[(int)lines[i].quickEnd - 1] = temp;
+
+                            swaps.Enqueue(new int[] { i, (int)lines[i].quickStart, (int)lines[i].quickEnd - 1 });
                         }
                         lines[i].quickLeft = null;
                         lines[i].quickRight = null;
@@ -226,6 +249,8 @@ namespace ColorSort
                             HSV temp = lines[i].Colors[(int)lines[i].quickLeft];
                             lines[i].Colors[(int)lines[i].quickLeft] = lines[i].Colors[(int)lines[i].quickEnd - 1];
                             lines[i].Colors[(int)lines[i].quickEnd - 1] = temp;
+
+                            swaps.Enqueue(new int[] { i, (int)lines[i].quickLeft, (int)lines[i].quickEnd - 1 });
 
                             lines[i].quickSubArrays.Enqueue(new int[] { (int)lines[i].quickLeft + 1, (int)lines[i].quickEnd - 1, (int)lines[i].quickLeft + 1, (int)lines[i].quickEnd });
                             lines[i].quickSubArrays.Enqueue(new int[] { (int)lines[i].quickStart, (int)lines[i].quickLeft - 1, (int)lines[i].quickStart, (int)lines[i].quickLeft });
@@ -245,6 +270,8 @@ namespace ColorSort
                                 HSV temp = lines[i].Colors[(int)lines[i].quickLeft];
                                 lines[i].Colors[(int)lines[i].quickLeft] = lines[i].Colors[(int)lines[i].quickRight];
                                 lines[i].Colors[(int)lines[i].quickRight] = temp;
+
+                                swaps.Enqueue(new int[] { i, (int)lines[i].quickLeft, (int)lines[i].quickRight });
 
                                 lines[i].foundLeft = false;
                                 lines[i].foundRight = false;

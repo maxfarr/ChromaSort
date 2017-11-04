@@ -45,7 +45,7 @@ namespace ColorSort
                 switch(init)
                 {
                     case InitType.UNLIMITED:
-                        currentColor = (new RGB((byte)rand.Next(0, 256), (byte)rand.Next(0, 256), (byte)rand.Next(0, 256))).ToHSV();
+                        currentColor = new HSV(rand.Next(0, 360), 1, 1);
                         break;
 
                     case InitType.RAINBOW:
@@ -53,31 +53,31 @@ namespace ColorSort
                         {
                             case 0:
                                 //currentColor = (new RGB(162, 56, 54)).ToHSV();
-                                currentColor = (new RGB(255, 0, 0)).ToHSV();
+                                currentColor = ColorConversions.toHSV(new RGB(255, 0, 0));
                                 break;
 
                             case 1:
-                                currentColor = (new RGB(221, 111, 0)).ToHSV();
+                                currentColor = ColorConversions.toHSV(new RGB(221, 111, 0));
                                 break;
 
                             case 2:
-                                currentColor = (new RGB(208, 217, 10)).ToHSV();
+                                currentColor = ColorConversions.toHSV(new RGB(208, 217, 10));
                                 break;
 
                             case 3:
-                                currentColor = (new RGB(0, 255, 20)).ToHSV();
+                                currentColor = ColorConversions.toHSV(new RGB(0, 255, 20));
                                 break;
 
                             case 4:
-                                currentColor = (new RGB(113, 202, 208)).ToHSV();
+                                currentColor = ColorConversions.toHSV(new RGB(0, 167, 244));
                                 break;
 
                             case 5:
-                                currentColor = (new RGB(88, 86, 199)).ToHSV();
+                                currentColor = ColorConversions.toHSV(new RGB(119, 47, 182));
                                 break;
 
                             case 6:
-                                currentColor = (new RGB(123, 75, 195)).ToHSV();
+                                currentColor = ColorConversions.toHSV(new RGB(161, 32, 123));
                                 break;
                         }
                         break;

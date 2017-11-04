@@ -85,17 +85,18 @@ namespace ColorSort
             rand = new Random();
             canvas = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             gfx = Graphics.FromImage(canvas);
-            colorImage = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            initialSize = new Size(32, 32);
+            initialSize = new Size(500, 500);
+            colorImage = new Bitmap(initialSize.Width, initialSize.Height);
             lines = new ColorLine[initialSize.Width];
             gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
+            gfx.PixelOffsetMode = PixelOffsetMode.Half;
 
             for (int i = 0; i < initialSize.Width; i++)
             {
                 lines[i] = new ColorLine(initialSize.Height, rand, InitType.UNLIMITED);
                 for (int j = 0; j < initialSize.Height; j++)
                 {
-                    RGB currentPixel = lines[i].Colors[j].ToRGB();
+                    RGB currentPixel = ColorConversions.toRGB(lines[i].Colors[j]);
                     colorImage.SetPixel(i, j, System.Drawing.Color.FromArgb(255, currentPixel.R, currentPixel.G, currentPixel.B));
                 }
             }
@@ -135,8 +136,8 @@ namespace ColorSort
 
             for(int i = 0; i < initialSize.Width; i++)
             {
-                RGB pixelA = lines[i].Colors[bubbleHeight].ToRGB();
-                RGB pixelB = lines[i].Colors[bubbleHeight - 1].ToRGB();
+                RGB pixelA = ColorConversions.toRGB(lines[i].Colors[bubbleHeight]);
+                RGB pixelB = ColorConversions.toRGB(lines[i].Colors[bubbleHeight - 1]);
 
                 colorImage.SetPixel(i, bubbleHeight, System.Drawing.Color.FromArgb(255, pixelA.R, pixelA.G, pixelA.B));
                 colorImage.SetPixel(i, bubbleHeight - 1, System.Drawing.Color.FromArgb(255, pixelB.R, pixelB.G, pixelB.B));
@@ -150,7 +151,7 @@ namespace ColorSort
                 lines[i] = new ColorLine(initialSize.Height, rand, init);
                 for (int j = 0; j < initialSize.Height; j++)
                 {
-                    RGB currentPixel = lines[i].Colors[j].ToRGB();
+                    RGB currentPixel = ColorConversions.toRGB(lines[i].Colors[j]);
                     colorImage.SetPixel(i, j, System.Drawing.Color.FromArgb(255, currentPixel.R, currentPixel.G, currentPixel.B));
                 }
             }
@@ -181,7 +182,7 @@ namespace ColorSort
             {
                 for (int j = 0; j < initialSize.Height; j++)
                 {
-                    RGB currentPixel = lines[i].Colors[j].ToRGB();
+                    RGB currentPixel = ColorConversions.toRGB(lines[i].Colors[j]);
                     bitmap.SetPixel(i, j, System.Drawing.Color.FromArgb(255, currentPixel.R, currentPixel.G, currentPixel.B));
                 }
             }
@@ -375,6 +376,7 @@ namespace ColorSort
             canvas = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             gfx = Graphics.FromImage(canvas);
             gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
+            gfx.PixelOffsetMode = PixelOffsetMode.Half;
 
             colorImage = generateImage();
             gfx.DrawImage(colorImage, new Rectangle(Point.Empty, pictureBox1.Size));

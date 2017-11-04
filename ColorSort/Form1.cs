@@ -50,11 +50,10 @@ namespace ColorSort
         bool makeSwap;
         int[] swap;
 
-        bool quickReady;
-
         enum Sorts
         {
             BUBBLE,
+            QUICK,
             NONE
         }
 
@@ -70,13 +69,12 @@ namespace ColorSort
             sorts = new Func<bool>[]
             {
                 bubbleSort,
+                quickSort,
                 () => { return false; }
             };
 
             currentSort = Sorts.NONE;
             sorted = false;
-
-            quickReady = false;
 
             //sort variables
             bubbleHeight = 1;
@@ -88,7 +86,7 @@ namespace ColorSort
             canvas = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             gfx = Graphics.FromImage(canvas);
             colorImage = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            initialSize = new Size(64, 32);
+            initialSize = new Size(32, 32);
             lines = new ColorLine[initialSize.Width];
             gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
 
@@ -193,11 +191,12 @@ namespace ColorSort
 
         bool quickSort()
         {
+            int sortedCount = 0;
             for(int i = 0; i < initialSize.Width; i++)
             {
                 if (lines[i].quickLeft != null)
                 {
-                    if(lines[i].quickEnd - lines[i].quickStart == 1)
+                    if(lines[i].quickEnd - lines[i].quickStart <= 1)
                     {
                         lines[i].quickLeft = null;
                         lines[i].quickRight = null;
@@ -207,14 +206,17 @@ namespace ColorSort
                     }
                     else if (lines[i].quickEnd - lines[i].quickStart == 2)
                     {
-                        if(lines[i].Colors[(int)lines[i].quickStart].H > lines[i].Colors[(int)lines[i].quickEnd].H)
+                        if(lines[i].Colors[(int)lines[i].quickStart].H > lines[i].Colors[(int)lines[i].quickEnd - 1].H)
                         {
-
+                            HSV temp = lines[i].Colors[(int)lines[i].quickStart];
+                            lines[i].Colors[(int)lines[i].quickStart] = lines[i].Colors[(int)lines[i].quickEnd - 1];
+                            lines[i].Colors[(int)lines[i].quickEnd - 1] = temp;
                         }
-                    }
-                    else if (lines[i].quickEnd - lines[i].quickStart == 3)
-                    {
-
+                        lines[i].quickLeft = null;
+                        lines[i].quickRight = null;
+                        lines[i].quickStart = null;
+                        lines[i].quickEnd = null;
+                        continue;
                     }
                     else
                     {
@@ -224,9 +226,15 @@ namespace ColorSort
                             lines[i].Colors[(int)lines[i].quickLeft] = lines[i].Colors[(int)lines[i].quickEnd - 1];
                             lines[i].Colors[(int)lines[i].quickEnd - 1] = temp;
 
+                            lines[i].quickSubArrays.Enqueue(new int[] { (int)lines[i].quickLeft + 1, (int)lines[i].quickEnd - 1, (int)lines[i].quickLeft + 1, (int)lines[i].quickEnd });
+                            lines[i].quickSubArrays.Enqueue(new int[] { (int)lines[i].quickStart, (int)lines[i].quickLeft - 1, (int)lines[i].quickStart, (int)lines[i].quickLeft });
+
+                            lines[i].foundLeft = false;
+                            lines[i].foundRight = false;
+
                             lines[i].quickLeft = null;
-                            lines[i].quickStart = null;
                             lines[i].quickRight = null;
+                            lines[i].quickStart = null;
                             lines[i].quickEnd = null;
                         }
                         else
@@ -237,6 +245,9 @@ namespace ColorSort
                                 lines[i].Colors[(int)lines[i].quickLeft] = lines[i].Colors[(int)lines[i].quickRight];
                                 lines[i].Colors[(int)lines[i].quickRight] = temp;
 
+                                lines[i].foundLeft = false;
+                                lines[i].foundRight = false;
+
                                 lines[i].quickLeft++;
                                 lines[i].quickRight--;
                             }
@@ -244,21 +255,25 @@ namespace ColorSort
                             {
                                 if (!lines[i].foundLeft)
                                 {
-                                    lines[i].quickLeft++;
-
                                     if (lines[i].Colors[(int)lines[i].quickLeft].H >= lines[i].Colors[(int)lines[i].quickEnd - 1].H)
                                     {
                                         lines[i].foundLeft = true;
+                                    }
+                                    else
+                                    {
+                                        lines[i].quickLeft++;
                                     }
                                 }
 
                                 if (!lines[i].foundRight)
                                 {
-                                    lines[i].quickRight--;
-
                                     if (lines[i].Colors[(int)lines[i].quickRight].H < lines[i].Colors[(int)lines[i].quickEnd - 1].H)
                                     {
-                                        lines[i].foundLeft = true;
+                                        lines[i].foundRight = true;
+                                    }
+                                    else
+                                    {
+                                        lines[i].quickRight--;
                                     }
                                 }
                             }
@@ -277,12 +292,12 @@ namespace ColorSort
                     }
                     else
                     {
-                        return true;
+                        sortedCount++;
                     }
                 }
             }
 
-            return false;
+            return (sortedCount == initialSize.Width);
         }
 
         bool bubbleSort()
@@ -350,26 +365,6 @@ namespace ColorSort
             }
         }
 
-        private void bubbleWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if(e.Error != null)
-            {
-                string error = "Error: " + e.Error.Message;
-            }
-            generateImage();
-        }
-
-        private void bubbleWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            //updateImage();
-        }
-
-        private void bubbleWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker worker = sender as BackgroundWorker;
-            bubbleSort();
-        }
-
         private void Form1_Resize(object sender, EventArgs e)
         {
             
@@ -394,6 +389,12 @@ namespace ColorSort
         private void rainbowHueROYGBIVToolStripMenuItem_Click(object sender, EventArgs e)
         {
             initialize(InitType.RAINBOW);
+        }
+
+        private void quickToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            currentSort = Sorts.QUICK;
+            sorted = false;
         }
     }
 }

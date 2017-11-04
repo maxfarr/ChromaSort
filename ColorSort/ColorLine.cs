@@ -34,7 +34,7 @@ namespace ColorSort
             quickSubArrays = new Queue<int[]>();
 
             quickLeft = 0;
-            quickRight = length;
+            quickRight = length - 1;
             quickStart = 0;
             quickEnd = length;
 

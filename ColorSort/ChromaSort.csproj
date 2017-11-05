@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C7AD965A-0722-4AB7-B98A-4C86C9DB63C6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ColorSort</RootNamespace>
-    <AssemblyName>ColorSort</AssemblyName>
+    <RootNamespace>ChromaSort</RootNamespace>
+    <AssemblyName>ChromaSort</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -72,6 +72,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

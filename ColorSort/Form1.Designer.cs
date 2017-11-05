@@ -1,4 +1,4 @@
-﻿namespace ColorSort
+﻿namespace ChromaSort
 {
     partial class Form1
     {

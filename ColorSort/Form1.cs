@@ -12,7 +12,7 @@ using Spectrum;
 using static Spectrum.Color;
 using System.Threading;
 
-namespace ColorSort
+namespace ChromaSort
 {
 
     struct Vector2

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Spectrum;
 using static Spectrum.Color;
 
-namespace ColorSort
+namespace ChromaSort
 {
     static class ColorConversions
     {

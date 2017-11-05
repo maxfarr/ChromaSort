@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using Spectrum;
 using static Spectrum.Color;
 
-namespace ColorSort
+namespace ChromaSort
 {
     class ColorLine
     {
